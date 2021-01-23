@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snack</title>
+</head>
+<body style="background-color: gray;">
+    <canvas id="stage" width="400" height="400"></canvas>
+    <script type="text/javascript">
+        /*O jogo só começa quando carregar a página*/
+        window.onload = function(){
+
+            var stage = document.getElementById('stage');
+            var ctx = stage.getContext("2d");
+            document.addEventListener("keydown", keyPush);
+
+            setInterval(game, 60);
+
+            const velo = 1;
+            var velox = veloy = 0;
+            var pontox = 10; 
+            var pontoy = 15;
+            var tp = 20;  /*tamanho das peças*/
+            var qp = 20; /*quantidade das peças*/
+            var macax = macay = 15;
+
+            var trail = []; 
+            tail = 5;
+
+            function game(){
+                pontox += velox;
+                pontoy += veloy;
+                if(pontox <0){
+                    pontox = qp-1;
+                }
+                if(pontox > qp-1){
+                    pontox = 0;
+                }
+                if(pontoy <0){
+                    pontoy = qp-1;
+                }
+                if(pontoy > qp-1){
+                    pontoy = 0;
+                }
+            
+                ctx.fillStyle = "black";
+                ctx.fillRect(0,0, stage.width, stage.height);
+
+                ctx.fillStyle = "red";
+                ctx.fillRect(macax*tp, macay*tp, tp,tp);
+
+                ctx.fillStyle = "green";
+                for(var i = 0; i< trail.length; i++){
+                    ctx.fillRect(trail[i].x*tp, trail[i].y*tp, tp-1,tp-1);
+                    
+                    if(trail[i].x == pontox && trail[i].y == pontoy){
+                        velox = veloy = 0;
+                        tail = 5;
+                    }
+                }
+                trail.push({x:pontox, y:pontoy})
+                while (trail.length > tail){
+                   trail.shift();
+                }
+                if(macax==pontox && macay==pontoy){
+                    tail++;
+                    macax = Math.floor(Math.random()*qp);
+                    macay = Math.floor(Math.random()*qp);
+                }
+            }
+            function keyPush(event){
+                switch(event.keyCode){
+                    case 37: //Left
+                    velox = -velo;
+                    veloy = 0;
+                    break;
+                    case 38: //Up
+                    velox = 0;
+                    veloy = -velo;
+                    break;
+                    case 39: //right
+                    velox = velo;
+                    veloy = 0;
+                    break;
+                    case 40: //down
+                    velox = 0;
+                    veloy = velo;
+                    break;
+                    default:
+                        break;
+
+                }
+
+            }
+        } 
+
+    </script>
+</body>
+</html>
